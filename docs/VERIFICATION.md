@@ -3,6 +3,7 @@
 Verified on November 7, 2026 (Asia/Manila).
 
 - ESLint, production build, and 12 integration tests pass.
+- A separate clean Git clone passed `npm ci`, built successfully, started its development server, and displayed 200 live tasks in the browser.
 - Browser loaded 200 tasks from the live JSONPlaceholder API.
 - Verified task-link navigation, direct `/tasks/2` loading, About, and browser back/forward navigation.
 - Tested desktop (1280 × 900) and mobile (390 × 844) viewports. Document scroll width equaled client width in both; no horizontal overflow.
