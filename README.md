@@ -1,6 +1,6 @@
 # Task Tracker
 
-A read-only React task browser for Mini Project 1, Full Stack Development with AI. Browse tasks, open details, and inspect their Open/Done status.
+A read-only React task browser for Mini Project 1, Full Stack Development with AI. Browse and search task titles, open details, and inspect their Open/Done status.
 
 ## Run locally
 
@@ -29,7 +29,7 @@ npm run preview
 - `/about`: purpose, technology, and data attribution.
 - Unknown routes and missing tasks have friendly fallback screens.
 
-`Layout` owns shared navigation. `TaskList` passes each task to `TaskRow`; `StatusBadge` renders completion state. Pages own queries and compose reusable loading, error, and empty-state components. React Router handles navigation; there is no duplicated task state in `useState`.
+`Layout` owns shared navigation. `TaskList` passes each task to `TaskRow`; `StatusBadge` renders completion state. Pages own queries and compose reusable loading, error, and empty-state components. `TasksPage` owns the search string with `useState` because both the search field and displayed list need it. `TaskSearch` receives the value and an `onChange` callback through props. The filtered list is derived from Query data and the search string; server data is never duplicated in local state. Search is case-insensitive, ignores surrounding whitespace, and resets when the Tasks page unmounts. React Router handles navigation.
 
 ## Data and caching
 
@@ -44,14 +44,14 @@ Automatic retries are disabled so failures are visible; **Try again** manually r
 - **Success:** open the app with internet access.
 - **Loading:** open browser Network tools, throttle the connection, and reload to clear in-memory Query data.
 - **Error/retry:** block `https://jsonplaceholder.typicode.com/*` in browser Network tools and reload; unblock it and select **Try again**. Request blocking is preferable to offline mode, which may pause Query requests.
-- **Empty:** `npm test -- -t 'shows an empty state'` supplies a controlled `[]` response and verifies the empty message.
+- **Empty:** search for `zzzz-no-task` to display the no-matches state, then select **Clear search** to restore the list. `npm test -- -t 'shows an empty state'` also verifies an empty API response using a controlled `[]` fixture.
 - **Missing task:** open `/tasks/9999`; invalid IDs such as `/tasks/nope` are rejected locally.
 - **Caching:** clear the Network log, visit a task, return to the list, and revisit that same task within 60 seconds. The integration suite also asserts the request count when revisiting two different tasks.
 - **Accessibility:** tab through navigation and task links, check visible focus, and use the skip link. Resize to a narrow mobile viewport and verify there is no horizontal scrolling.
 
 ## Scope
 
-React + Vite, React Router, TanStack Query, Tailwind CSS, ESLint, Vitest, and React Testing Library. No search, filters, task editing, statistics, login, backend, persistence, or deployment. User IDs are displayed as supplied by the API. Public API availability is outside the app's control.
+React + Vite, React Router, TanStack Query, Tailwind CSS, ESLint, Vitest, and React Testing Library. Includes client-side title search. No status/user filters, task editing, statistics, login, backend, persistence, or deployment. User IDs are displayed as supplied by the API. Public API availability is outside the app's control.
 
 See [PROJECT-BRIEF.md](PROJECT-BRIEF.md) for the rubric and source evidence. Its transcript reference points to local course materials outside this repository; those materials are intentionally not published.
 
@@ -59,11 +59,15 @@ See [PROJECT-BRIEF.md](PROJECT-BRIEF.md) for the rubric and source evidence. Its
 
 ![Task list on desktop](docs/screenshots/tasks-desktop.png)
 
-[Mobile task list](docs/screenshots/tasks-mobile.png) · [Task details](docs/screenshots/task-details.png) · [About](docs/screenshots/about-desktop.png)
+![Task details route](docs/screenshots/task-details.png)
+
+![About route](docs/screenshots/about-desktop.png)
+
+[Mobile task list](docs/screenshots/tasks-mobile.png)
 
 [Loading](docs/screenshots/loading-state.png) · [Empty](docs/screenshots/empty-state.png) · [Error](docs/screenshots/error-state.png)
 
-Request-state screenshots use controlled test-only responses. See [verification results](docs/VERIFICATION.md).
+The empty-state screenshot demonstrates title search with no matches. Loading and error screenshots use controlled test-only responses. See [verification results](docs/VERIFICATION.md).
 
 ## Submission
 

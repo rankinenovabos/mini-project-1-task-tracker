@@ -1,3 +1,5 @@
+import { useState } from "react";
+import TaskSearch from "../components/TaskSearch";
 import { useQuery } from "@tanstack/react-query";
 import { getTasks } from "../api/tasks";
 import TaskList from "../components/TaskList";
@@ -7,7 +9,12 @@ import {
   EmptyState,
 } from "../components/RequestStates";
 export default function TasksPage() {
+  const [search, setSearch] = useState("");
   const query = useQuery({ queryKey: ["todos"], queryFn: getTasks });
+  const searchTerm = search.trim().toLowerCase();
+  const filteredTasks = (query.data ?? []).filter((task) =>
+    task.title.toLowerCase().includes(searchTerm),
+  );
   return (
     <>
       <div className="mb-9">
@@ -32,11 +39,12 @@ export default function TasksPage() {
           )}
           {query.data && (
             <>
+              <TaskSearch value={search} onChange={setSearch} />
               <div className="mb-4 flex items-center justify-between gap-4">
                 <h2 className="font-semibold">
-                  All tasks{" "}
+                  {searchTerm ? "Matching tasks" : "All tasks"}{" "}
                   <span className="ml-2 rounded-md bg-purple-100 px-2 py-1 text-xs text-purple-900">
-                    {query.data.length}
+                    {filteredTasks.length}
                   </span>
                 </h2>
                 <span className="text-xs text-stone-500">
@@ -44,7 +52,25 @@ export default function TasksPage() {
                 </span>
               </div>
               {query.data.length ? (
-                <TaskList tasks={query.data} />
+                filteredTasks.length ? (
+                  <TaskList tasks={filteredTasks} />
+                ) : (
+                  <section className="panel text-center" aria-live="polite">
+                    <h2 className="text-xl font-semibold">
+                      No tasks match your search
+                    </h2>
+                    <p className="mt-2 text-stone-600">
+                      Try another title or clear your search to see all tasks.
+                    </p>
+                    <button
+                      type="button"
+                      className="button mt-5"
+                      onClick={() => setSearch("")}
+                    >
+                      Clear search
+                    </button>
+                  </section>
+                )
               ) : (
                 <EmptyState />
               )}

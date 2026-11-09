@@ -1,6 +1,8 @@
 # Verification
 
-Verified on November 7, 2026 (Asia/Manila).
+Initial verification: November 7, 2026 (Asia/Manila).
+
+Updated November 9, 2026: added title search with `useState` owned by `TasksPage`, a controlled `TaskSearch` component, and directly demonstrable no-match feedback. All 14 integration tests, ESLint, and the production build pass. Browser checks confirmed searching for `zzzz-no-task` produces zero matches, Clear search restores 200 tasks, and the 390-pixel mobile layout has no horizontal overflow. Refreshed desktop, mobile, and empty-state screenshots; embedded screenshots for all three routes in the README.
 
 - ESLint, production build, and 12 integration tests pass.
 - A separate clean Git clone passed `npm ci`, built successfully, started its development server, and displayed 200 live tasks in the browser.
@@ -18,4 +20,4 @@ The initial critical test-tool advisories were resolved by updating Vitest and r
 
 ## Submission checks still owned by the learner
 
-Confirm Canvas deadline and required repository visibility or grader invitations. No deployment or Canvas submission was performed.
+Confirm Canvas deadline. The repository is being made public at the learner’s request so graders can access it without invitations. No deployment or Canvas submission was performed.

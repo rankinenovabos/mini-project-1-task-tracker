@@ -152,3 +152,47 @@ describe("Task Tracker", () => {
     );
   });
 });
+
+describe("Task title search", () => {
+  it("filters case-insensitively, trims whitespace, and does not refetch", async () => {
+    const fetchMock = vi
+      .spyOn(globalThis, "fetch")
+      .mockResolvedValue(response(tasks));
+    const user = userEvent.setup();
+    mount();
+    await screen.findByRole("link", { name: tasks[0].title });
+    await user.type(
+      screen.getByRole("searchbox", { name: "Search task titles" }),
+      "  REVIEW  ",
+    );
+    expect(
+      screen.getByRole("link", { name: tasks[1].title }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("link", { name: tasks[0].title }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Matching tasks 1" }),
+    ).toBeInTheDocument();
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("shows no matches and restores all tasks when search is cleared", async () => {
+    vi.spyOn(globalThis, "fetch").mockResolvedValue(response(tasks));
+    const user = userEvent.setup();
+    mount();
+    await screen.findByRole("link", { name: tasks[0].title });
+    await user.type(screen.getByRole("searchbox"), "zzzz-no-task");
+    expect(
+      screen.getByRole("heading", { name: "No tasks match your search" }),
+    ).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Clear search" }));
+    expect(screen.getByRole("searchbox")).toHaveValue("");
+    expect(
+      screen.getByRole("link", { name: tasks[0].title }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: tasks[1].title }),
+    ).toBeInTheDocument();
+  });
+});

@@ -20,7 +20,7 @@ Use React with Vite and JavaScript, React Router, TanStack Query, Tailwind CSS, 
 
 Use JSONPlaceholder at `https://jsonplaceholder.typicode.com`, with `/todos` for the list and `/todos/:id` for details. Display the supplied user ID; fetching user names is outside the selected minimum scope.
 
-**Excluded:** search, filters, completion checkboxes, task creation/editing/deletion, Stats, authentication, database, backend, deployment, and AI features inside the app.
+**Excluded:** status/user filters, completion checkboxes, task creation/editing/deletion, Stats, authentication, database, backend, deployment, and AI features inside the app.
 
 The mockup is illustrative. Its checkboxes, user-name badges, filters, charts, sample totals, and exact styling are not all mandatory. Use live response data rather than hard-coded mockup totals.
 
@@ -28,7 +28,7 @@ The mockup is illustrative. Its checkboxes, user-name badges, filters, charts, s
 
 - Use a shared layout with Tasks and About navigation.
 - Create reusable task-list, task-row, status-badge, and request-state components. Pass task data through props.
-- Keep fetched data in TanStack Query. Do not duplicate it in component state or add artificial state solely to demonstrate `useState`.
+- Keep fetched data in TanStack Query. Do not duplicate it in component state or add artificial state. Use `useState` for the task-title search string, owned by `TasksPage` and passed to `TaskSearch` through props and a callback.
 - Use `['todos']` for the list and `['todo', id]` for individual tasks. Keep detail IDs consistent in query keys.
 - Set `staleTime` to 60,000 milliseconds for observable cached navigation, matching the classroom demonstration. This is a freshness window, not a periodic-fetch timer.
 - Handle unsuccessful HTTP responses explicitly so failed requests reach the error UI.
@@ -47,13 +47,14 @@ The mockup is illustrative. Its checkboxes, user-name badges, filters, charts, s
 
 ## Rubric mapping
 
-The points below come from the supplied assignment slide. Evidence describes the planned submission, not completed work.
+The points below reflect the Canvas rubric reviewed November 9, 2026, superseding the classroom slide. Evidence describes the planned submission, not completed work.
 
 | Grading area | Points | Planned evidence |
 |---|---:|---|
-| Components, props, state ownership | 25 | Clear component responsibilities; task data passed through props; server data owned by Query |
+| Components, props, data flow | 15 | Clear component responsibilities; task data passed through props; server data owned by Query |
+| `useState` and state ownership | 15 | Search owned by the nearest common ancestor; results derived without duplicating server data |
 | Routing, including dynamic ID | 15 | Three routes; task details use `useParams` |
-| TanStack Query / server state | 20 | List/detail queries, distinct keys, observable cache reuse |
+| TanStack Query / server state | 15 | List/detail queries, distinct keys, observable cache reuse |
 | Loading / error / empty / success | 10 | Implemented states with reproducible verification steps |
 | Responsive Tailwind UI / basic accessibility | 10 | Usable mobile and desktop layouts; keyboard navigation |
 | ESLint / code quality | 10 | Passing lint check and readable code |
@@ -111,5 +112,5 @@ Reference materials inspected include the Part B `week4_reference_app` structure
 
 - The selected scope is the strict minimum, documented in one Markdown brief.
 - Route content, user-ID display, component boundaries, and the verification approach are project decisions; they are not presented as verbatim instructor requirements.
-- The supplied screenshots and transcript establish the available assignment requirements. The complete Canvas assignment was not inspected.
+- The supplied screenshots and transcript establish the available assignment requirements. The Canvas assignment was inspected November 9, 2026; it explicitly requires appropriate `useState` usage. Title search was added to satisfy that requirement and demonstrate an empty result directly.
 - The instructor names **November 9** as the deadline. Confirm the year, exact time, timezone, and any additional submission requirements in Canvas rather than inferring them from the recording.
